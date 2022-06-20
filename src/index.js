@@ -1,7 +1,8 @@
-const { REST } = require('@discordjs/rest'); // Define REST.
-const { Routes } = require('discord-api-types/v9'); // Define Routes.
-const fs = require('fs'); // Define fs (file system).
-const { Client, Intents, Collection } = require('discord.js'); // Define Client, Intents, and Collection.
+const { REST } = require("@discordjs/rest"); // Define REST.
+const { Routes } = require("discord-api-types/v9"); // Define Routes.
+const fs = require("fs"); // Define fs (file system).
+const axios = require("axios"); // Requite axios (http).
+const { Client, Intents, Collection } = require("discord.js"); // Define Client, Intents, and Collection.
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 }); // Connect to our discord bot.
@@ -9,10 +10,10 @@ const commands = new Collection(); // Where the bot (slash) commands will be sto
 const commandarray = []; // Array to store commands for sending to the REST API.
 const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
 // Execute code when the "ready" client event is triggered.
-client.once('ready', () => {
+client.once("ready", () => {
   const commandFiles = fs
-    .readdirSync('src/Commands')
-    .filter(file => file.endsWith('.js')); // Get and filter all the files in the "Commands" Folder.
+    .readdirSync("src/Commands")
+    .filter((file) => file.endsWith(".js")); // Get and filter all the files in the "Commands" Folder.
 
   // Loop through the command files
   for (const file of commandFiles) {
@@ -21,17 +22,17 @@ client.once('ready', () => {
     commandarray.push(command.data.toJSON()); // Push the command data to an array (for sending to the API).
   }
 
-  const rest = new REST({ version: '9' }).setToken(token); // Define "rest" for use in registering commands
+  const rest = new REST({ version: "9" }).setToken(token); // Define "rest" for use in registering commands
   // Register slash commands.
   (async () => {
     try {
-      console.log('Started refreshing application (/) commands.');
+      console.log("Started refreshing application (/) commands.");
 
       await rest.put(Routes.applicationCommands(client.user.id), {
         body: commandarray,
       });
 
-      console.log('Successfully reloaded application (/) commands.');
+      console.log("Successfully reloaded application (/) commands.");
     } catch (error) {
       console.error(error);
     }
@@ -39,7 +40,7 @@ client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 // Command handler.
-client.on('interactionCreate', async interaction => {
+client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
 
   const command = commands.get(interaction.commandName);
@@ -51,34 +52,30 @@ client.on('interactionCreate', async interaction => {
   } catch (error) {
     console.error(error);
     return interaction.reply({
-      content: '**A critical error has occured, do not retry.**',
+      content: "**A critical error has occured, do not retry.**",
       ephemeral: true,
     });
   }
 });
 // Autocomplete handler.
-client.on('interactionCreate', async interaction => {
+client.on("interactionCreate", async (interaction) => {
   if (!interaction.isAutocomplete()) return;
 
   const focusedOption = interaction.options.getFocused(true);
-  let choices;
 
-  if (focusedOption.name === 'user') {
-    if (!focusedOption.value.length > 2) return;
-    choices = ['faq', 'install', 'collection', 'promise', 'debug'];
-  } else {
-    return;
-  }
+  if (!focusedOption.name === "user" || !focusedOption.value.length > 2) return;
+  let users = [];
+  const response = await axios.get(
+    `https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`
+  );
+  response.data.data.map((match) => {
+    users.push({
+      name: match.displayName + " (@" + match.name + ")",
+      value: match.id,
+    });
+  });
 
-  const filtered = choices.filter(choice =>
-    choice.startsWith(focusedOption.value)
-  );
-  await interaction.respond(
-    filtered.map(choice => ({
-      name: choice,
-      value: choice,
-    }))
-  );
+  await interaction.respond(users);
 });
 
 client.login(token); // Login to the bot client via the defined "token" string.
