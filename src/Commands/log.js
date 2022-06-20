@@ -23,13 +23,7 @@ module.exports = {
 			option
 				.setName('action')
 				.setDescription('The action taken on the violator')
-				.setRequired(true)
-				.addChoices(
-					{ name: 'Funny', value: 'gif_funny' },
-					{ name: 'Meme', value: 'gif_meme' },
-					{ name: 'Movie', value: 'gif_movie' }
-				)
-		),
+				.setRequired(true)),
 	execute: async (interaction, client) => {
 		let user = await helpers.user(interaction.options.data[0].value);
 		console.log(user);
