@@ -48,9 +48,10 @@ module.exports = {
 				)
 		),
 	execute: async (interaction, client) => {
-		let user = await helpers.user();
+		let user = await helpers.user(interaction.options.data[0].value);
+		console.log(user);
 		interaction.reply({
-			content: interaction.options.data[0].value + '\n' + users.join(', '),
+			content: 'Success',
 			ephemeral: true,
 		});
 	},
