@@ -14,7 +14,7 @@ const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
 client.once('ready', () => {
 	const commandFiles = fs
 		.readdirSync('src/Commands')
-		.filter(file => file.endsWith('.js')); // Get and filter all the files in the "Commands" Folder.
+		.filter((file) => file.endsWith('.js')); // Get and filter all the files in the "Commands" Folder.
 
 	// Loop through the command files
 	for (const file of commandFiles) {
@@ -41,7 +41,7 @@ client.once('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
 // Command handler.
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isCommand()) return;
 
 	const command = commands.get(interaction.commandName);
@@ -60,26 +60,34 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 // Autocomplete handler.
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isAutocomplete()) return;
 
 	const focusedOption = interaction.options.getFocused(true);
-	console.log(focusedOption);
 	if (!focusedOption.name == 'user') return;
-	if (focusedOption.value.length < 2 || !focusedOption.value) return;
+	if (!focusedOption.value) return;
 	let users = [];
 	try {
 		const response = await axios.get(
 			`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`
 		);
-		response.data.data.map(match => {
-			users.push({
-				name: match.displayName + ' (@' + match.name + ')',
-				value: match.id.toString(),
+		if (!response.data.errors) {
+			response.data.data.map((match) => {
+				users.push({
+					name: match.displayName + ' (@' + match.name + ')',
+					value: match.id.toString(),
+				});
 			});
-		});
-		console.log(users);
-		await interaction.respond(users);
+			await interaction.respond(users);
+		} else {
+			await interaction.respond({
+				name:
+					response.errors[0].message.replace('keyword', 'username') +
+					' | #' +
+					response.errors[0].code,
+				value: focusedOption.value,
+			});
+		}
 	} catch (error) {}
 });
 
