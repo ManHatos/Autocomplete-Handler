@@ -13,16 +13,13 @@ module.exports = {
         .setAutocomplete(true)
     ),
   execute: async (interaction, client) => {
-    try {
-      const response = await axios.get(
-        `https://users.roblox.com/v1/users/search?keyword=${interaction.options.data[0].value}&limit=10`
-      );
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await axios.get(
+      `https://users.roblox.com/v1/users/search?keyword=${interaction.options.data[0].value}&limit=10`
+    );
+    console.log(response.data);
+
     interaction.reply({
-      content: interaction.options.data[0].value,
+      content: interaction.options.data[0].value + '\n' + JSON.stringify(response.data),
       ephemeral: true,
     });
   },
