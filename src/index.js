@@ -76,15 +76,10 @@ client.on('interactionCreate', async interaction => {
 				value: match.id,
 			});
 		});
-
+		console.log(users);
 		await interaction.respond(users);
 	} catch (error) {
 		console.error(error);
-		return interaction.reply({
-			content:
-				'<:FSRP_Warned:961733338329129000> **A critical error has occured.**',
-			ephemeral: true,
-		});
 	}
 });
 
