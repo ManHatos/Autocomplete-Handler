@@ -63,7 +63,7 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isAutocomplete()) return;
 
 	const focusedOption = interaction.options.getFocused(true);
-
+	console.log(focuedOption);
 	if (!focusedOption.name === 'user' || !focusedOption.value.length > 2) return;
 	let users = [];
 	try {
@@ -84,3 +84,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.login(token); // Login to the bot client via the defined "token" string.
+
