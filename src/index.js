@@ -51,10 +51,28 @@ client.on("interactionCreate", async interaction => {
   } catch (error) {
     console.error(error);
     return interaction.reply({
-      content: "There was an error while executing this command!",
+      content: "**A critical error has occured, do not retry.**",
       ephemeral: true,
     });
   }
+});
+// Autocomplete handler.
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isAutocomplete()) return;
+
+		const focusedOption = interaction.options.getFocused(true);
+		let choices;
+
+		if (focusedOption.name === 'user') {
+			choices = ['faq', 'install', 'collection', 'promise', 'debug'];
+		} else {
+      return;
+    }
+      
+		const filtered = choices.filter(choice => choice.startsWith(focusedOption.value));
+		await interaction.respond(
+			filtered.map(choice => ({ name: choice, value: choice })),
+		);
 });
 
 client.login(token); // Login to the bot client via the defined "token" string.
