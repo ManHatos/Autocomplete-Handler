@@ -74,7 +74,7 @@ client.on('interactionCreate', async interaction => {
 		response.data.data.map(match => {
 			users.push({
 				name: match.displayName + ' (@' + match.name + ')',
-				value: match.id,
+				value: match.id.toString(),
 			});
 		});
 		console.log(users);
