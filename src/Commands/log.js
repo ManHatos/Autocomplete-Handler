@@ -10,6 +10,6 @@ module.exports = {
                      .setDescription('The Roblox username of the violator')
                      .setRequired(true)),
   execute: async (interaction, client) => {
-    return interaction.reply({ content: interaction.data.options[0].value });
+    return interaction.reply({ content: 'Hi' });
   },
 };
