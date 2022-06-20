@@ -8,7 +8,7 @@ module.exports = {
     .addStringOption(option => 
                      option.setName('user')
                      .setDescription('The Roblox username of the violator')
-                     .setRequired(true));
+                     .setRequired(true)),
   execute: async (interaction, client) => {
     return interaction.reply({ content: interaction.data.options[0].value });
   },
