@@ -14,7 +14,9 @@ module.exports = {
     ),
   execute: async (interaction, client) => {
     try {
-      const response = await axios.get('/user?ID=12345');
+      const response = await axios.get(
+        `https://users.roblox.com/v1/users/search?keyword=${interaction.options.data[0].value}&limit=10`
+      );
       console.log(response);
     } catch (error) {
       console.error(error);
