@@ -12,6 +12,6 @@ module.exports = {
             .setRequired(true)
             .setAutocomplete(true)),
     execute: async (interaction, client) => {
-        interaction.reply({ conten: 'Success!', ephemeral: true });
+        interaction.reply({ content: interaction.options.data[0].value, ephemeral: true });
     },
 };
