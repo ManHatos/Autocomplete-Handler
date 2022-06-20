@@ -7,8 +7,9 @@ module.exports = {
     .addStringOption(option => 
                      option.setName('user')
                      .setDescription('The Roblox username of the violator')
-                     .setRequired(true)),
+                     .setRequired(true)
+                     .setAutocomplete(true)),
   execute: async (interaction, client) => {
-    return interaction.reply({ content: 'Hi' });
+    return interaction.reply({ content: 'Hi', ephemeral: true });
   },
 };
