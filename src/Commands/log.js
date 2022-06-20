@@ -18,7 +18,7 @@ module.exports = {
       `https://users.roblox.com/v1/users/search?keyword=${interaction.options.data[0].value}&limit=10`
     );
     console.log(response.data);
-    response.data.map(match => {
+    response.data.data.map(match => {
       users.push(match.displayName + '(' + '@' + match.name + ')');
     });
     interaction.reply({
