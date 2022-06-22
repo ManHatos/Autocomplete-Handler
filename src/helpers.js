@@ -18,7 +18,7 @@ module.exports = {
 			}
 		} else {
 			let userAPI = await axios.get(
-				'https://users.roblox.com/v1/users/${userid}'
+				`https://users.roblox.com/v1/users/${userid}`
 			);
 			userAPI.data.avatar =
 				'https://cdn.discordapp.com/attachments/893226654086864966/968269659348562011/unknown.png';
