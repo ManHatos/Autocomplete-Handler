@@ -25,9 +25,11 @@ module.exports = {
 				.setDescription('The action taken on the violator')
 				.setRequired(true)
 				.addChoices(
-					{ name: 'Funny', value: 'gif_funny' },
-					{ name: 'Meme', value: 'gif_meme' },
-					{ name: 'Movie', value: 'gif_movie' }
+					{ name: 'Ban', value: 'gif_funny' },
+					{ name: 'Kick', value: 'gif_meme' },
+					{ name: 'Warning 2', value: 'gif_movie' },
+					{ name: 'Warning 1', value: 'W1' },
+					{ name: 'Verbal Warning', value: 'VW' }
 				)
 		),
 	execute: async (interaction, client) => {
