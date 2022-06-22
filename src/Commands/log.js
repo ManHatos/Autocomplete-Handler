@@ -45,7 +45,11 @@ module.exports = {
 			embeds: [
 				{
 					title: '**Moderation Log**\n ‎‎',
-					description: `\`Moderator: \`<@${interaction.user.id}>\n\`ID: ${interaction.user.id}\`\n\`\`\`U: ${user.data.name}\nR: ${interaction.options[1].data.value}\nA: ${interaction.options[2].data.value}\`\`\``,
+					description: `\`Moderator: \`<@${interaction.user.id}>\n\`ID: ${
+						interaction.user.id
+					}\`\n\`\`\`U: ${user.data.name}\nR: ${
+						interaction.options.getString('reason').value
+					}\nA: ${interaction.options.getString('action').value}\`\`\``,
 					color: 3092790,
 					author: {
 						name: `${interaction.user.username}#${interaction.user.discriminator}`,
