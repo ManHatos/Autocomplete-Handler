@@ -82,13 +82,15 @@ client.on('interactionCreate', async (interaction) => {
 		} else {
 			await interaction.respond({
 				name:
-					response.errors[0].message.replace('keyword', 'username') +
+					response.data.errors[0].message.replace('keyword', 'username') +
 					' | #' +
-					response.errors[0].code,
+					response.data.errors[0].code,
 				value: focusedOption.value,
 			});
 		}
-	} catch (error) {}
+	} catch (error) {
+		console.log(error);
+	}
 });
 
 client.login(token); // Login to the bot client via the defined "token" string.
