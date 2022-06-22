@@ -71,7 +71,7 @@ client.on('interactionCreate', async (interaction) => {
 		const response = await axios.get(
 			`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`
 		);
-		if (!response.data.errors) {
+		if (!response.data.errors[0]) {
 			response.data.data.map((match) => {
 				users.push({
 					name: match.displayName + ' (@' + match.name + ')',
@@ -80,13 +80,16 @@ client.on('interactionCreate', async (interaction) => {
 			});
 			await interaction.respond(users);
 		} else {
-			await interaction.respond({
-				name:
-					response.data.errors[0].message.replace('keyword', 'username') +
-					' | #' +
-					response.data.errors[0].code,
-				value: focusedOption.value,
-			});
+			console.log(response.data, focusedOption.value);
+			await interaction.respond([
+				{
+					name:
+						response.data.errors[0].message.replace('keyword', 'username') +
+						' | #' +
+						response.data.errors[0].code,
+					value: focusedOption.value,
+				},
+			]);
 		}
 	} catch (error) {
 		console.log(error);
