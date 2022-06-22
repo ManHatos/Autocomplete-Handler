@@ -66,13 +66,17 @@ client.on('interactionCreate', async (interaction) => {
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
 	if (!focusedOption.value) return;
-	if (!focusedOption.value.split('').length > 2) {
-		await interaction.respond([
-			{
-				name: 'The username is too short',
-				value: focusedOption.value,
-			},
-		]);
+	console.log(focusedOption.value.split(''));
+	if (focusedOption.value.split('').length < 3) {
+		await interaction
+			.respond([
+				{
+					name: 'The username is too short',
+					value: focusedOption.value,
+				},
+			])
+			.then(console.log)
+			.catch(console.error);
 		return;
 	}
 	let users = [];
@@ -87,21 +91,24 @@ client.on('interactionCreate', async (interaction) => {
 					value: match.id.toString(),
 				});
 			});
-			await interaction.respond(users);
+			await interaction.respond(users).then(console.log).catch(console.error);
 		} else {
-			console.log(response.data, focusedOption.value);
-			await interaction.respond([
-				{
-					name:
-						response.data.errors[0].message.replace('keyword', 'username') +
-						' | #' +
-						response.data.errors[0].code,
-					value: focusedOption.value,
-				},
-			]);
+			console.log(response.data, focusedOption.value, '#1');
+			await interaction
+				.respond([
+					{
+						name:
+							response.data.errors[0].message.replace('keyword', 'username') +
+							' | #' +
+							response.data.errors[0].code,
+						value: focusedOption.value,
+					},
+				])
+				.then(console.log)
+				.catch(console.error);
 		}
 	} catch (error) {
-		console.log(error.data, focusedOption.value);
+		console.log(error.data, focusedOption.value, '#2');
 	}
 });
 
