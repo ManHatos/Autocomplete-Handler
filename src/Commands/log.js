@@ -35,15 +35,21 @@ module.exports = {
 	execute: async (interaction, client) => {
 		let user = await helpers.user(interaction.options.data[0].value);
 		let channel = client.channels.cache.get('911388101543337994');
-		await channe.send({
+		if (user.data.state == 0) {
+			await interaction.reply(
+				'<:Violations:956695827441659915> **The username** `${context.params.event.data.options[0].value}` **is incorrect**'
+			);
+			return;
+		}
+		await channel.send({
 			embeds: [
 				{
 					title: '**Moderation Log**\n ‎‎',
-					description: `\`Moderator: \`<@${mod.id}>\n\`ID: ${mod.id}\`\n\`\`\`U: ${user.data.name}\nR: ${reason}\nA: ${action}\`\`\``,
+					description: `\`Moderator: \`<@${interaction.user.id}>\n\`ID: ${interaction.user.id}\`\n\`\`\`U: ${user.data.name}\nR: ${interaction.options[1].value}\nA: ${interaction.options[2].value}\`\`\``,
 					color: 3092790,
 					author: {
-						name: `${mod.username}#${mod.discriminator}`,
-						icon_url: `https://cdn.discordapp.com/avatars/${mod.id}/${mod.avatar}.png?size=256`,
+						name: `${interaction.user.username}#${interaction.user.discriminator}`,
+						icon_url: `https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}.png?size=256`,
 					},
 					image: {
 						url: 'https://cdn.discordapp.com/attachments/821290011763671048/981153414069256192/750x1-00000000.png',
