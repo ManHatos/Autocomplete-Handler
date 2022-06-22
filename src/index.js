@@ -72,7 +72,7 @@ client.on('interactionCreate', async (interaction) => {
 			`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`
 		);
 		response.data.data.map((match) => {
-			if (!match.name > 20) {
+			if (match.name <= 20) {
 				users.push({
 					name: match.displayName + ' (@' + match.name + ')',
 					value: match.id.toString(),
@@ -82,14 +82,7 @@ client.on('interactionCreate', async (interaction) => {
 		console.log('users', users);
 		await interaction.respond(users).then(console.log).catch(console.error);
 	} catch (error) {
-		await interaction.respond([
-			{
-				name: error.response.data.errors[0].message
-					.replace('keyword', 'username')
-					.replace('.', ''),
-				value: focusedOption.value,
-			},
-		]);
+		await interaction.respond([]);
 	}
 });
 
