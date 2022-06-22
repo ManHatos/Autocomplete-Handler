@@ -66,6 +66,7 @@ client.on('interactionCreate', async (interaction) => {
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
 	if (!focusedOption.value) return;
+	if (!focusedOption.value.length > 2) return;
 	let users = [];
 	try {
 		const response = await axios.get(
@@ -92,7 +93,7 @@ client.on('interactionCreate', async (interaction) => {
 			]);
 		}
 	} catch (error) {
-		console.log(error.data);
+		console.log(error.data, focusedOption.value);
 	}
 });
 
