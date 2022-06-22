@@ -35,6 +35,7 @@ module.exports = {
 	execute: async (interaction, client) => {
 		let user = await helpers.user(interaction.options.data[0].value);
 		let channel = client.channels.cache.get('911388101543337994');
+		console.log(user);
 		if (user.data.state == 0) {
 			await interaction.reply(
 				`<:Violations:956695827441659915> **The username** \`${interaction.options.getString('user')}\` **is incorrect**`
