@@ -36,9 +36,12 @@ module.exports = {
 		let user = await helpers.user(interaction.options.data[0].value);
 		let channel = client.channels.cache.get('911388101543337994');
 		if (user.state == 0) {
-			await interaction.reply(
-				`<:Violations:956695827441659915> **The username** \`${interaction.options.getString('user')}\` **is incorrect**`
-			);
+			await interaction.reply({
+				content: `<:Violations:956695827441659915> **The username** \`${interaction.options.getString(
+					'user'
+				)}\` **is incorrect**`,
+				ephemeral: true,
+			});
 			return;
 		}
 		await channel.send({
@@ -47,9 +50,9 @@ module.exports = {
 					title: '**Moderation Log**\n ‎‎',
 					description: `\`Moderator: \`<@${interaction.user.id}>\n\`ID: ${
 						interaction.user.id
-					}\`\n\`\`\`U: ${user.data.name}\nR: ${
-						interaction.options.getString('reason')
-					}\nA: ${interaction.options.getString('action')}\`\`\``,
+					}\`\n\`\`\`U: ${user.data.name}\nR: ${interaction.options.getString(
+						'reason'
+					)}\nA: ${interaction.options.getString('action')}\`\`\``,
 					color: 3092790,
 					author: {
 						name: `${interaction.user.username}#${interaction.user.discriminator}`,
