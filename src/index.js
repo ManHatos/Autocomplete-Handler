@@ -92,13 +92,10 @@ client.on('interactionCreate', async (interaction) => {
 		console.log('users', users);
 		await interaction.respond(users).then(console.log).catch(console.error);
 	} catch (error) {
-		console.log('error', error.response);
 		await interaction.respond([
 			{
 				name:
-					error.response.data.errors[0].message.replace('keyword', 'username') +
-					' | #' +
-					error.response.data.errors[0].code,
+					error.response.data.errors[0].message,
 				value: focusedOption.value,
 			},
 		]);
