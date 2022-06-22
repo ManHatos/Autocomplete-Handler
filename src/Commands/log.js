@@ -24,14 +24,7 @@ module.exports = {
 				.setName('action')
 				.setDescription('The action taken on the violator')
 				.setRequired(true)
-				.addChoice(
-					'Ban',
-					'Ban'
-						.addChoice('Kick', 'Kick')
-						.addChoice('Warning 2', 'W2')
-						.addChoice('Warning 1', 'W1')
-						.addChoice('Verbal Warning', 'VW')
-				)
+				.addChoices(['Ban','Ban']);
 		),
 	execute: async (interaction, client) => {
 		let user = await helpers.user(interaction.options.data[0].value);
