@@ -66,7 +66,6 @@ client.on('interactionCreate', async (interaction) => {
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
 	console.log(focusedOption.value.split(''));
-	}
 	let users = [];
 	try {
 		const response = await axios.get(
@@ -83,8 +82,9 @@ client.on('interactionCreate', async (interaction) => {
 	} catch (error) {
 		await interaction.respond([
 			{
-				name:
-					error.response.data.errors[0].message.replace('keyword', 'username').replace('.', ''),
+				name: error.response.data.errors[0].message
+					.replace('keyword', 'username')
+					.replace('.', ''),
 				value: focusedOption.value,
 			},
 		]);
