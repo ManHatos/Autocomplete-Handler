@@ -66,7 +66,11 @@ client.on('interactionCreate', async (interaction) => {
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
 	if (!focusedOption.value) return;
-	if (!focusedOption.value.length > 2) return;
+	if (!focusedOption.value.split('').length > 2) {
+		await interaction.respond([
+			{ name: 'The username is too short,', value: focusedOption.value },
+		]);
+	}
 	let users = [];
 	try {
 		const response = await axios.get(
