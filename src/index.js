@@ -66,17 +66,6 @@ client.on('interactionCreate', async (interaction) => {
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
 	console.log(focusedOption.value.split(''));
-	if (focusedOption.value.split('').length < 3) {
-		await interaction
-			.respond([
-				{
-					name: 'The username is too short',
-					value: focusedOption.value,
-				},
-			])
-			.then(console.log)
-			.catch(console.error);
-		return;
 	}
 	let users = [];
 	try {
@@ -95,7 +84,7 @@ client.on('interactionCreate', async (interaction) => {
 		await interaction.respond([
 			{
 				name:
-					error.response.data.errors[0].message,
+					error.response.data.errors[0].message.replace('keyword', 'username').replace('.', ''),
 				value: focusedOption.value,
 			},
 		]);
