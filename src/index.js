@@ -72,10 +72,12 @@ client.on('interactionCreate', async (interaction) => {
 			`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`
 		);
 		response.data.data.map((match) => {
-			users.push({
-				name: match.displayName + ' (@' + match.name + ')',
-				value: match.id.toString(),
-			});
+			if (!match.name > 20) {
+				users.push({
+					name: match.displayName + ' (@' + match.name + ')',
+					value: match.id.toString(),
+				});
+			}
 		});
 		console.log('users', users);
 		await interaction.respond(users).then(console.log).catch(console.error);
