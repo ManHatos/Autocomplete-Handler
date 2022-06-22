@@ -109,7 +109,7 @@ client.on('interactionCreate', async (interaction) => {
 				.catch(console.error);
 		}
 	} catch (error) {
-		console.log('error', error.data);
+		console.log('error', error);
 	}
 });
 
