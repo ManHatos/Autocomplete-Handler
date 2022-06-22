@@ -84,7 +84,7 @@ client.on('interactionCreate', async (interaction) => {
 			`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`
 		);
 		console.log(response.data);
-		if (!response.data.errors[0]) {
+		if (response.data.data) {
 			response.data.data.map((match) => {
 				users.push({
 					name: match.displayName + ' (@' + match.name + ')',
@@ -94,6 +94,7 @@ client.on('interactionCreate', async (interaction) => {
 			console.log('users', users);
 			await interaction.respond(users).then(console.log).catch(console.error);
 		} else {
+			console.log('API error', response.data);
 			await interaction
 				.respond([
 					{
