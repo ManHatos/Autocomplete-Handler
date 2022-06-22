@@ -88,10 +88,10 @@ client.on('interactionCreate', async (interaction) => {
 			response.data.data.map((match) => {
 				users.push({
 					name: match.displayName + ' (@' + match.name + ')',
-					value: match.id.toString(),
+					value: match.id,
 				});
 			});
-			console.log(users);
+			console.log('users', users);
 			await interaction.respond(users).then(console.log).catch(console.error);
 		} else {
 			await interaction
@@ -108,7 +108,7 @@ client.on('interactionCreate', async (interaction) => {
 				.catch(console.error);
 		}
 	} catch (error) {
-		console.log(error.data);
+		console.log('error', error.data);
 	}
 });
 
