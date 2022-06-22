@@ -72,7 +72,7 @@ client.on('interactionCreate', async (interaction) => {
 			`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`
 		);
 		response.data.data.map((match) => {
-			if (match.name <= 20) {
+			if (match.name.split('').length <= 20) {
 				users.push({
 					name: match.displayName + ' (@' + match.name + ')',
 					value: match.id.toString(),
@@ -87,4 +87,5 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 client.login(token); // Login to the bot client.
+
 
