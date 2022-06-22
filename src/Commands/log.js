@@ -37,7 +37,7 @@ module.exports = {
 		let channel = client.channels.cache.get('911388101543337994');
 		if (user.data.state == 0) {
 			await interaction.reply(
-				'<:Violations:956695827441659915> **The username** `${context.params.event.data.options[0].value}` **is incorrect**'
+				`<:Violations:956695827441659915> **The username** \`${interaction.options.getString('user')}\` **is incorrect**`
 			);
 			return;
 		}
@@ -48,8 +48,8 @@ module.exports = {
 					description: `\`Moderator: \`<@${interaction.user.id}>\n\`ID: ${
 						interaction.user.id
 					}\`\n\`\`\`U: ${user.data.name}\nR: ${
-						interaction.options.getString('reason').value
-					}\nA: ${interaction.options.getString('action').value}\`\`\``,
+						interaction.options.getString('reason')
+					}\nA: ${interaction.options.getString('action')}\`\`\``,
 					color: 3092790,
 					author: {
 						name: `${interaction.user.username}#${interaction.user.discriminator}`,
