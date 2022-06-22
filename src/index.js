@@ -65,7 +65,6 @@ client.on('interactionCreate', async (interaction) => {
 
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
-	if (!focusedOption.value) return;
 	console.log(focusedOption.value.split(''));
 	if (focusedOption.value.split('').length < 3) {
 		await interaction
@@ -92,7 +91,7 @@ client.on('interactionCreate', async (interaction) => {
 					value: match.id.toString(),
 				});
 			});
-			console.log(response.users);
+			console.log(users);
 			await interaction.respond(users).then(console.log).catch(console.error);
 		} else {
 			await interaction
