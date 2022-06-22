@@ -108,7 +108,7 @@ client.on('interactionCreate', async (interaction) => {
 		console.log('users', users);
 		await interaction.respond(users).then(console.log).catch(console.error);
 	} catch (error) {
-		console.log('error', error);
+		console.log('error', error.response);
 	}
 });
 
