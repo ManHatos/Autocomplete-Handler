@@ -68,8 +68,12 @@ client.on('interactionCreate', async (interaction) => {
 	if (!focusedOption.value) return;
 	if (!focusedOption.value.split('').length > 2) {
 		await interaction.respond([
-			{ name: 'The username is too short,', value: focusedOption.value },
+			{
+				name: 'The username is too short',
+				value: focusedOption.value,
+			},
 		]);
+		return;
 	}
 	let users = [];
 	try {
