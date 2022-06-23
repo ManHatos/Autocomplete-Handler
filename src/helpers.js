@@ -4,7 +4,7 @@ module.exports = {
 	user: async function user(username) {
 		try {
 			let userid = username;
-			if (parseInt(username).isNaN) {
+			if (!parseInt(username)) {
 				userid = await axios.post(
 					'https://users.roblox.com/v1/usernames/users',
 					{
