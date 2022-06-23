@@ -5,12 +5,13 @@ const helpers = require('../helpers.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('records')
-		.setDescription('Search a player\' active records')
+		.setDescription("Search a player' active records")
 		.addStringOption((option) =>
 			option
 				.setName('user')
 				.setDescription('The Roblox username of the player')
 				.setRequired(true)
+				.setAutocomplete(true)
 		),
 	execute: async (interaction, client) => {
 		return;
