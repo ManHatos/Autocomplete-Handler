@@ -10,7 +10,7 @@ module.exports = {
 			option
 				.setName('channel')
 				.setDescription('Channel to send export in')
-				.addChannelTypes(['GuildText'])
+				.addChannelTypes('GuildText')
 		),
 	execute: async (interaction, client) => {
 		return;
