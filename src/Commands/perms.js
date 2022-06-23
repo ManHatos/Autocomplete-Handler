@@ -10,14 +10,20 @@ module.exports = {
 			option
 				.setName('type')
 				.setDescription('The violations of the violator')
-				.setRequired(true))
+				.setRequired(true)
+				.addChoices(
+					{ name: 'Bank Robbery', value: 'Bank Robbery Permissions' },
+					{ name: 'Road Work', value: 'Road Work Permissions' }
+				)
+		)
 		.addStringOption((option) =>
 			option
 				.setName('users')
 				.setDescription('The Roblox usernames of the players')
-				.setRequired(true)),
+				.setRequired(true)
+		),
 	execute: async (interaction, client) => {
-return;
+		return;
 	},
 };
 
