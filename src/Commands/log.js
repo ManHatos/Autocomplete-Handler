@@ -34,7 +34,7 @@ module.exports = {
 		),
 	execute: async (interaction, client) => {
 		let user = await helpers.user(interaction.options.data[0].value);
-		let channel = client.channels.cache.get('911388101543337994');
+		let channel = client.channels.cache.get('914740295961284618');
 		if (user.state == 0) {
 			await interaction.reply({
 				content: `<:Violations:956695827441659915> **The username** \`${interaction.options.getString(
