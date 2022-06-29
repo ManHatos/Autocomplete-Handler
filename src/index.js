@@ -65,7 +65,6 @@ client.on('interactionCreate', async (interaction) => {
 
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
-	console.log(focusedOption.value.split(''));
 	let users = [];
 	try {
 		const response = await axios.get(
@@ -79,13 +78,11 @@ client.on('interactionCreate', async (interaction) => {
 				});
 			}
 		});
-		console.log('users', users);
-		await interaction.respond(users).then(console.log).catch(console.error);
+		await interaction.respond(users);
 	} catch (error) {
 		await interaction.respond([]);
 	}
 });
 
 client.login(token); // Login to the bot client.
-
 
