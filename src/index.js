@@ -64,7 +64,11 @@ client.on('messageCreate', async (interaction) => {
 	let user = interaction.embeds[0].description.match(/(?<=\/)\d+(?=\/)/)[0];
 	let action = interaction.embeds[0].description.match(/(?<=command: ":)\w+/m)[0];
 	action = action.charAt(0).toUpperCase() + action.slice(1);
-	await axios.post('', { user: user, action: action });
+	await axios.post('https://main--logging.manhat.autocode.gg/events/discord/command/autolog/', {
+		mod: interaction.author,
+		user: user,
+		action: action,
+	});
 });
 // Autocomplete handler.
 client.on('interactionCreate', async (interaction) => {
