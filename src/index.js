@@ -58,13 +58,14 @@ client.on('interactionCreate', async (interaction) => {
 });
 // Autologging.
 client.on('messageCreate', async (interaction) => {
-	console.log(interaction.channelId.toString() + interaction.channelId);
+	console.log(`${interaction.channelId.toString()}  ${interaction.channelId}`);
 	if (interaction.channelId.toString() !== '932426257625403432') return;
 	if (interaction.webhookId.toString() !== '970119697980850207') return;
 
 	let user = interaction.embeds[0].description.match(/(?<=\/)\d+(?=\/)/)[0];
 	let action = interaction.embeds[0].description.match(/(?<=command: ":)\w+/m)[0];
 	action = action.charAt(0).toUpperCase() + action.slice(1);
+	console.log(user, action);
 });
 // Autocomplete handler.
 client.on('interactionCreate', async (interaction) => {
