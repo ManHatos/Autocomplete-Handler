@@ -12,9 +12,7 @@ const commandarray = []; // Array to store commands for sending to the REST API.
 const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
 // Execute code when the "ready" client event is triggered.
 client.once('ready', () => {
-	const commandFiles = fs
-		.readdirSync('src/Commands')
-		.filter((file) => file.endsWith('.js')); // Get and filter all the files in the "Commands" Folder.
+	const commandFiles = fs.readdirSync('src/Commands').filter((file) => file.endsWith('.js')); // Get and filter all the files in the "Commands" Folder.
 
 	// Loop through the command files
 	for (const file of commandFiles) {
@@ -53,11 +51,20 @@ client.on('interactionCreate', async (interaction) => {
 	} catch (error) {
 		console.error(error);
 		return interaction.reply({
-			content:
-				'<:FSRP_Warned:961733338329129000> **A critical error has occured.**',
+			content: '<:FSRP_Warned:961733338329129000> **A critical error has occured.**',
 			ephemeral: true,
 		});
 	}
+});
+// Autologging.
+client.on('messageCreate', async (interaction) => {
+	console.log(interaction.channelId.toString() + interaction.channelId);
+	if (interaction.channelId.toString() !== '932426257625403432') return;
+	if (interaction.webhookId.toString() !== '970119697980850207') return;
+
+	let user = interaction.embeds[0].description.match(/(?<=\/)\d+(?=\/)/)[0];
+	let action = interaction.embeds[0].description.match(/(?<=command: ":)\w+/m)[0];
+	action = action.charAt(0).toUpperCase() + action.slice(1);
 });
 // Autocomplete handler.
 client.on('interactionCreate', async (interaction) => {
