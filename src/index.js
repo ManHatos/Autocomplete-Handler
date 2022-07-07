@@ -49,12 +49,12 @@ client.on('interactionCreate', async (interaction) => {
 		await command.execute(interaction, client);
 	} catch (error) {
 		console.error(error);
-		return interaction.reply({
+		return await interaction.reply({
 			content: '<:FSRP_Warned:961733338329129000> **A critical error has occured.**',
 			ephemeral: true,
 		});
 	}
-	console.log(`${interaction.user.tag} (@${interaction.user.id}) executed /${interaction.commandName}`);
+	console.log(`${interaction.user.tag} (#${interaction.user.id}) executed /${interaction.commandName}`);
 });
 // Autocomplete handler.
 client.on('interactionCreate', async (interaction) => {
@@ -62,14 +62,16 @@ client.on('interactionCreate', async (interaction) => {
 
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
+	if (!focusedOption.value || focusedOption.value.split('').length < 3) return await interaction.respond([]);
 	console.log(
-		`${interaction.user.tag} (@${interaction.user.id}) is using '${focusedOption.name}' Autocomplete on /${interaction.commandName}:   ${focusedOption.value}`
+		`${interaction.user.tag} (#${interaction.user.id}) is using '${focusedOption.name}' Autocomplete on /${interaction.commandName}:   ${focusedOption.value}`
 	);
 	let users = [];
 	const response = await axios
-		.get(`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`)
+		.get(`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}`)
 		.catch(function (error) {
 			if (error.response) {
+				if (error.response.data) return;
 				console.log(error.response.data);
 				console.log(error.response.status);
 			} else if (error.request) {
@@ -80,11 +82,14 @@ client.on('interactionCreate', async (interaction) => {
 		});
 	response?.data?.data?.map((match) => {
 		users.push({
-			name: `@${match.name} (#${match.id})`,
+			name: `${match.displayName.replace(/(?<=.{45})[\s\S]+/, '...')} (@${match.name.replace(
+				/(?<=.{40})[\s\S]+/,
+				'...'
+			)})`,
 			value: match.id.toString(),
 		});
 	});
-	return await interaction.respond(users);
+	return await interaction.respond([{ name: 'ERROR_WM#1294', value: '0' }]);
 });
 
 client.login(token); // Login to the bot client.
