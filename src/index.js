@@ -63,6 +63,7 @@ client.on('interactionCreate', async (interaction) => {
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
 	if (!focusedOption.value || focusedOption.value.split('').length < 3) return await interaction.respond([]);
+
 	console.log(
 		`${interaction.user.tag} (#${interaction.user.id}) is using '${focusedOption.name}' Autocomplete on /${interaction.commandName}:   ${focusedOption.value}`
 	);
@@ -71,7 +72,6 @@ client.on('interactionCreate', async (interaction) => {
 		.get(`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}`)
 		.catch(function (error) {
 			if (error.response) {
-				if (error.response.data?.errors[0]?.code == '5') response = 'try_precise';
 				console.log(error.response.data);
 				console.log(error.response.status);
 			} else if (error.request) {
@@ -80,41 +80,15 @@ client.on('interactionCreate', async (interaction) => {
 				console.log('Error', error.message);
 			}
 		});
-	if (response == 'try_precise') {
-		response = await axios
-			.post(`https://users.roblox.com/v1/usernames/users`, {
-				usernames: [focusedOption.value.toString()],
-			})
-			.catch(function (error) {
-				if (error.response) {
-					console.log(error.response.data);
-					console.log(error.response.status);
-				} else if (error.request) {
-					console.log(error.request);
-				} else {
-					console.log('Error', error.message);
-				}
-			});
-		if (response?.data?.data[0]) {
-			users.push({
-				name: `${response.data.data[0].displayName.replace(
-					/(?<=.{45})[\s\S]+/,
-					'...'
-				)} (@${response.data.data[0].name.replace(/(?<=.{40})[\s\S]+/, '...')})`,
-				value: response.data.data[0].id.toString(),
-			});
-		}
-	} else {
-		response?.data?.data?.map((match) => {
-			users.push({
-				name: `${match.displayName.replace(/(?<=.{45})[\s\S]+/, '...')} (@${match.name.replace(
-					/(?<=.{40})[\s\S]+/,
-					'...'
-				)})`,
-				value: match.id.toString(),
-			});
+	response?.data?.data?.map((match) => {
+		users.push({
+			name: `${match.displayName.replace(/(?<=.{45})[\s\S]+/, '...')} (@${match.name.replace(
+				/(?<=.{40})[\s\S]+/,
+				'...'
+			)})`,
+			value: match.id.toString(),
 		});
-	}
+	});
 	return await interaction.respond(users);
 });
 
