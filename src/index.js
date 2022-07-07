@@ -54,9 +54,7 @@ client.on('interactionCreate', async (interaction) => {
 			ephemeral: true,
 		});
 	}
-	console.log(
-		`${interaction.user.username}#${interaction.user.tag} (@${interaction.user.id}) executed /${interaction.commandName}`
-	);
+	console.log(`${interaction.user.tag} (@${interaction.user.id}) executed /${interaction.commandName}`);
 });
 // Autocomplete handler.
 client.on('interactionCreate', async (interaction) => {
@@ -65,12 +63,12 @@ client.on('interactionCreate', async (interaction) => {
 	const focusedOption = interaction.options.getFocused(true);
 	if (!focusedOption.name == 'user') return;
 	console.log(
-		`${interaction.user.username}#${interaction.user.tag} (@${interaction.user.id}) is using '${focusedOption.name}' Autocomplete /${interaction.commandName}:   ${focusedOption.value}`
+		`${interaction.user.tag} (@${interaction.user.id}) is using '${focusedOption.name}' Autocomplete on /${interaction.commandName}:   ${focusedOption.value}`
 	);
 	let users = [];
 	const response = await axios
 		.get(`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}&limit=10`)
-		.catch(async function (error) {
+		.catch(function (error) {
 			if (error.response) {
 				console.log(error.response.data);
 				console.log(error.response.status);
@@ -79,9 +77,8 @@ client.on('interactionCreate', async (interaction) => {
 			} else {
 				console.log('Error', error.message);
 			}
-			return await interaction.respond([]);
 		});
-	response.data.data.map((match) => {
+	response?.data?.data?.map((match) => {
 		users.push({
 			name: `@${match.name} (#${match.id})`,
 			value: match.id.toString(),
