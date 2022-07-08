@@ -38,58 +38,62 @@ client.once('ready', () => {
 	})();
 	console.log(`Logged in as ${client.user.tag}!`);
 });
-// Command handler.
+// Interactions handler.
 client.on('interactionCreate', async (interaction) => {
-	if (!interaction.isCommand()) return;
+	if (interaction.isCommand()) {
+		const command = commands.get(interaction.commandName);
+		if (!command) return;
 
-	const command = commands.get(interaction.commandName);
-	if (!command) return;
+		try {
+			await command.execute(interaction, client);
+		} catch (error) {
+			console.error(error);
+			return await interaction.reply({
+				content: '<:FSRP_Warned:961733338329129000> **A critical error has occured.**',
+				ephemeral: true,
+			});
+		}
+		console.log(`${interaction.user.tag} (#${interaction.user.id}) executed /${interaction.commandName}`);
+	} else if (interaction.isAutocomplete()) {
+		const focusedOption = interaction.options.getFocused(true);
+		if (!focusedOption.name == 'user') return;
+		if (!focusedOption.value || focusedOption.value.split('').length < 3)
+			return await interaction.respond([]).catch(function (error) {
+				console.log(error);
+			});
 
-	try {
-		await command.execute(interaction, client);
-	} catch (error) {
-		console.error(error);
-		return await interaction.reply({
-			content: '<:FSRP_Warned:961733338329129000> **A critical error has occured.**',
-			ephemeral: true,
+		console.log(
+			`${interaction.user.tag} (#${interaction.user.id}) is using '${focusedOption.name}' Autocomplete on /${interaction.commandName}:   ${focusedOption.value}`
+		);
+		let users = [];
+		let response = await axios
+			.get(`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}`)
+			.catch(function (error) {
+				if (error.response) {
+					console.log(error.response.data);
+					console.log(error.response.status);
+				} else if (error.request) {
+					console.log(error.request);
+				} else {
+					console.log('Error', error.message);
+				}
+			});
+		response?.data?.data?.map((match) => {
+			users.push({
+				name: `${match.displayName.replace(/(?<=.{45})[\s\S]+/, '...')} (@${match.name.replace(
+					/(?<=.{40})[\s\S]+/,
+					'...'
+				)})`,
+				value: match.id.toString(),
+			});
+		});
+		await interaction.respond(users).catch(function (error) {
+			console.log(error);
 		});
 	}
-	console.log(`${interaction.user.tag} (#${interaction.user.id}) executed /${interaction.commandName}`);
-});
-// Autocomplete handler.
-client.on('interactionCreate', async (interaction) => {
-	if (!interaction.isAutocomplete()) return;
-
-	const focusedOption = interaction.options.getFocused(true);
-	if (!focusedOption.name == 'user') return;
-	if (!focusedOption.value || focusedOption.value.split('').length < 3) return await interaction.respond([]);
-
-	console.log(
-		`${interaction.user.tag} (#${interaction.user.id}) is using '${focusedOption.name}' Autocomplete on /${interaction.commandName}:   ${focusedOption.value}`
-	);
-	let users = [];
-	let response = await axios
-		.get(`https://users.roblox.com/v1/users/search?keyword=${focusedOption.value}`)
-		.catch(function (error) {
-			if (error.response) {
-				console.log(error.response.data);
-				console.log(error.response.status);
-			} else if (error.request) {
-				console.log(error.request);
-			} else {
-				console.log('Error', error.message);
-			}
-		});
-	response?.data?.data?.map((match) => {
-		users.push({
-			name: `${match.displayName.replace(/(?<=.{45})[\s\S]+/, '...')} (@${match.name.replace(
-				/(?<=.{40})[\s\S]+/,
-				'...'
-			)})`,
-			value: match.id.toString(),
-		});
+	process.on('uncaughtException', function (error) {
+		console.error(error);
 	});
-	return await interaction.respond(users);
 });
 
 client.login(token); // Login to the bot client.
