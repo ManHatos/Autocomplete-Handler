@@ -18,8 +18,6 @@ module.exports = {
 				.setName('reason')
 				.setDescription('The violations of the violator')
 				.setRequired(true)
-				.setMinLength(1)
-				.setMaxLength(2000)
 		)
 		.addStringOption((option) =>
 			option
