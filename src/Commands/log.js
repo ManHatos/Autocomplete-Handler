@@ -12,12 +12,14 @@ module.exports = {
 				.setDescription('The Roblox username of the violator')
 				.setRequired(true)
 				.setAutocomplete(true)
+				.setMinLength(3)
 		)
 		.addStringOption((option) =>
 			option
 				.setName('reason')
 				.setDescription('The violations of the violator')
 				.setRequired(true)
+				.setMaxLength(2000)
 		)
 		.addStringOption((option) =>
 			option
@@ -36,4 +38,3 @@ module.exports = {
 		return;
 	},
 };
-
