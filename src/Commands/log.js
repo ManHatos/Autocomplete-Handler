@@ -13,12 +13,14 @@ module.exports = {
 				.setRequired(true)
 				.setAutocomplete(true)
 				.setMinLength(3)
+				.setMaxLength(50)
 		)
 		.addStringOption((option) =>
 			option
 				.setName('reason')
 				.setDescription('The violations of the violator')
 				.setRequired(true)
+				.setMinLength(1)
 				.setMaxLength(2000)
 		)
 		.addStringOption((option) =>
