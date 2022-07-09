@@ -12,8 +12,6 @@ module.exports = {
 				.setDescription('The Roblox username of the violator')
 				.setRequired(true)
 				.setAutocomplete(true)
-				.setMinLength(3)
-				.setMaxLength(50)
 		)
 		.addStringOption((option) =>
 			option
