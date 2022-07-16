@@ -1,8 +1,8 @@
 {
-  "name": "discordjs",
+  "name": "FloridaStateBot",
   "version": "1.0.0",
   "main": "src/index.js",
-  "author": "Jake Runzer",
+  "author": "ManHat",
   "license": "MIT",
   "scripts": {
     "dev": "nodemon .",
