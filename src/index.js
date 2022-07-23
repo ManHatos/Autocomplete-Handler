@@ -63,7 +63,7 @@ client.on("interactionCreate", async (interaction) => {
         console.log(error);
       });
     if (focusedOption.value.match(/[\s\S]+ \(@[\s\S]+\)/)) {
-      user = focusedOption.value.match(/(?=[^]+?[^_]+)\w{3,20}(?=)/)[0];
+      user = focusedOption.value.match(/(?=[^]+?[^_]+)\w{3,20}(?=\))/)[0];
     }
     if (!user) user = focusedOption.value;
 
