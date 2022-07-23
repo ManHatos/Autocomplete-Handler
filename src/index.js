@@ -58,10 +58,10 @@ client.on("interactionCreate", async (interaction) => {
     const focusedOption = interaction.options.getFocused(true);
     let user = null;
     if (!focusedOption.name == "user") return;
-    if (!focusedOption.value || focusedOption.value.split("").length < 3)
-      if (focusedOption.value.match(/[\s\S]+ \(@[\s\S]+\)/)) {
-        user = userid.match(/(?=[^]+?[^_]+)\w{3,20}(?=)/)[0];
-      }
+    if (!focusedOption.value || focusedOption.value.split("").length < 3) return;
+    if (focusedOption.value.match(/[\s\S]+ \(@[\s\S]+\)/)) {
+      user = userid.match(/(?=[^]+?[^_]+)\w{3,20}(?=)/)[0];
+    }
     if (!user) user = focusedOption.value;
     return await interaction.respond([]).catch(function (error) {
       console.log(error);
