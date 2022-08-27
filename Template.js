@@ -1,4 +1,6 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { ApplicationCommandType, ApplicationCommandOptionType, SlashCommandBuilder } = require('discord.js');
+const axios = require("axios");
+const helpers = require("../helpers.js");
 
 module.exports = {
   data: new SlashCommandBuilder()

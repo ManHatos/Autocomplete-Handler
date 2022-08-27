@@ -1,34 +1,35 @@
-const { REST } = require("@discordjs/rest"); // Define REST.
-const { Routes } = require("discord-api-types/v9"); // Define Routes.
-const fs = require("fs"); // Define fs (file system).
-const axios = require("axios"); // Requite axios (http).
-const helpers = require("./helpers.js"); // Require helpers.
-const { Client, Intents, Collection } = require("discord.js"); // Define Client, Intents, and Collection.
-const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
-}); // Connect to our discord bot.
-const commands = new Collection(); // Where the bot (slash) commands will be stored.
-const commandarray = []; // Array to store commands for sending to the REST API.
-const token = process.env.DISCORD_TOKEN; // Token from Railway Env Variable.
-// Execute code when the "ready" client event is triggered.
-client.once("ready", () => {
-  const commandFiles = fs.readdirSync("src/Commands").filter((file) => file.endsWith(".js")); // Get and filter all the files in the "Commands" Folder.
+const { REST } = require("@discordjs/rest");
+const fs = require("fs");
+const axios = require("axios");
+const helpers = require("./helpers.js");
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Partials.Channel] });
+const commands = [];
+const map = new Map();
+const token = process.env.DISCORD_TOKEN;
 
-  // Loop through the command files
+client.once("ready", () => {
+  const commandFiles = fs.readdirSync("src/commands").filter((file) => file.endsWith(".js"));
+  const autocompleteFiles = fs.readdirSync("src/autocomplete").filter((file) => file.endsWith(".js"));
+
   for (const file of commandFiles) {
-    const command = require(`./Commands/${file}`); // Get and define the command file.
-    commands.set(command.data.name, command); // Set the command name and file for handler to use.
-    commandarray.push(command.data.toJSON()); // Push the command data to an array (for sending to the API).
+    const command = require(`./commands/${file}`);
+    map.set(command.data.name + ' slash', command);
+    commands.push(command.data.toJSON());
   }
 
-  const rest = new REST({ version: "9" }).setToken(token); // Define "rest" for use in registering commands
-  // Register slash commands.
+  for (const file of autocompleteFiles) {
+    const option = require(`./autocomplete/${file}`);
+    map.set(option.data.name + ' autocomplete', option);
+  }
+
+  const rest = new REST({ version: '10' }).setToken(token);
   (async () => {
     try {
       console.log("Started refreshing application (/) commands.");
 
       await rest.put(Routes.applicationCommands(client.user.id), {
-        body: commandarray,
+        body: commands,
       });
 
       console.log("Successfully reloaded application (/) commands.");
@@ -38,65 +39,38 @@ client.once("ready", () => {
   })();
   console.log(`Logged in as ${client.user.tag}!`);
 });
-// Interactions handler.
+
 client.on("interactionCreate", async (interaction) => {
-  if (interaction.isCommand()) {
-    const command = commands.get(interaction.commandName);
+  if (interaction.type === 2) {
+    const command = map.get(interaction.commandName + ' slash');
     if (!command) return;
 
     try {
-      await command.execute(interaction, client);
+      // await command.execute(interaction, client);
     } catch (error) {
       console.error(error);
       return await interaction.reply({
-        content: "<:FSRP_Warned:961733338329129000> **A critical error has occured.**",
+        content: "<:FSRP_Warned:961733338329129000> **An unexpected error has occured while trying to execute this command.**\n**Please forward this message to `ManHat#2824`.**\n\n\n```js\n" + error.toJSON() + "```",
         ephemeral: true,
       });
     }
     console.log(`${interaction.user.tag} (#${interaction.user.id}) executed /${interaction.commandName}`);
-  } else if (interaction.isAutocomplete()) {
-    const focusedOption = interaction.options.getFocused(true);
-    let user = null;
-    if (!focusedOption.name == "user") return;
-    if (!focusedOption.value || focusedOption.value.split("").length < 3)
-      return await interaction.respond([]).catch(function (error) {
-        console.log(error);
-      });
-    if (focusedOption.value.match(/[\s\S]+ \(@[\s\S]+\)/)) {
-      user = focusedOption.value.match(/(?=[^]+?[^_]+)\w{3,20}(?=\))/)[0];
-    }
-    if (!user) user = focusedOption.value;
+  } else if (interaction.type === 4) {
+    const option = map.get(interaction.options.getFocused(true).name + ' autocomplete');
+    if (!option) return;
 
+    try {
+      await option.execute(interaction, client);
+    } catch (error) {
+      console.error(error);
+    }
     console.log(
       `${interaction.user.tag} (#${interaction.user.id}) is using '${focusedOption.name}' Autocomplete on /${interaction.commandName}:   ${user}`
     );
-    let users = [];
-    let response = await axios.get(`https://users.roblox.com/v1/users/search?keyword=${user}`).catch(function (error) {
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log("Error", error.message);
-      }
-    });
-    response?.data?.data?.map((match) => {
-      users.push({
-        name: `${match.displayName.replace(/(?<=.{45})[\s\S]+/, "...")} (@${match.name.replace(
-          /(?<=.{40})[\s\S]+/,
-          "..."
-        )})`,
-        value: match.id.toString(),
-      });
-    });
-    await interaction.respond(users).catch(function (error) {
-      console.log(error);
-    });
   }
-  process.on("uncaughtException", function (error) {
+  process.on("uncaughtException", async (error) => {
     console.error(error);
   });
 });
 
-client.login(token); // Login to the bot client.
+client.login(token);

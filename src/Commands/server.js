@@ -7,7 +7,9 @@ module.exports = {
 		.setName('server')
 		.setDescription('Announce a server startup, or shutdown')
 		.addSubcommand((subcommand) =>
-			subcommand.setName('startup').setDescription('Announce a server startup')
+			subcommand
+				.setName('startup')
+				.setDescription('Announce a server startup')
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
@@ -18,4 +20,3 @@ module.exports = {
 		return;
 	},
 };
-

@@ -9,20 +9,20 @@ module.exports = {
 		.addStringOption((option) =>
 			option
 				.setName('user')
-				.setDescription('The Roblox username of the violator')
+				.setDescription('The Roblox username of the player')
 				.setRequired(true)
 				.setAutocomplete(true)
 		)
 		.addStringOption((option) =>
 			option
 				.setName('reason')
-				.setDescription('The violations of the violator')
+				.setDescription('The violations of the player')
 				.setRequired(true)
 		)
 		.addStringOption((option) =>
 			option
 				.setName('action')
-				.setDescription('The action taken on the violator')
+				.setDescription('The action taken on the player')
 				.setRequired(true)
 				.addChoices(
 					{ name: 'Ban', value: 'Ban' },

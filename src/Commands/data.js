@@ -9,7 +9,7 @@ module.exports = {
 		.addUserOption((option) =>
 			option
 				.setName('user')
-				.setDescription('View a staff member\' total moderation time')
+				.setDescription('View another staff member\'s total moderation time')
 				.setRequired(false)
 		),
 	execute: async (interaction, client) => {
