@@ -65,7 +65,7 @@ client.on("interactionCreate", async (interaction) => {
       console.error(error);
     }
     console.log(
-      `${interaction.user.tag} (#${interaction.user.id}) is using '${interaction.options.getFocused(true).name}' Autocomplete on /${interaction.commandName}:   ${user}`
+      `${interaction.user.tag} (#${interaction.user.id}) is using '${interaction.options.getFocused(true).name}' Autocomplete on /${interaction.commandName}:   ${interaction.options.getFocused(true).value}`
     );
   }
   process.on("uncaughtException", async (error) => {
