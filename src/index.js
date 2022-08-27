@@ -20,7 +20,7 @@ client.once("ready", () => {
 
   for (const file of autocompleteFiles) {
     const option = require(`./autocomplete/${file}`);
-    map.set(option.data.name + ' autocomplete', option);
+    map.set(option.name + ' autocomplete', option);
   }
 
   const rest = new REST({ version: '10' }).setToken(token);

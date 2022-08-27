@@ -3,9 +3,10 @@ const axios = require("axios");
 const helpers = require("../helpers.js");
 
 module.exports = {
+  name: 'user',
   execute: async (interaction, client) => {
     const focusedOption = interaction.options.getFocused(true);
-    
+
     let user = null;
     if (!focusedOption.name == "user") return;
     if (!focusedOption.value || focusedOption.value.split("").length < 3)
