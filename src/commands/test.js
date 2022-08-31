@@ -9,6 +9,6 @@ module.exports = {
         .setDescription("this is only a test"),
     execute: async (interaction, client) => {
         const e = await db.test('SELECT * FROM users');
-        return interaction.reply(e?.rows?.toJSON());
+        return interaction.reply(JSON.stringify(e));
     },
 };
