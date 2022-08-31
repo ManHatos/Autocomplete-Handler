@@ -10,10 +10,6 @@ module.exports = {
     execute: async (interaction, client) => {
         const e = await db.test('SELECT * FROM users');
         console.log(e.rows);
-        return interaction.reply('`SELECT * FROM users` returned:\n\n```js\n' + e.rows.toJSON() + '```');
-    },
-    test: async () => {
-        const e = await db.test('SELECT * FROM users');
-        console.log('`SELECT * FROM users` returned:\n\n```js\n' + JSON.stringify(e.rows) + '```');
+        return interaction.reply('`SELECT * FROM users` returned:\n\n```js\n' + JSON.stringify(e.rows) + '```');
     },
 };
