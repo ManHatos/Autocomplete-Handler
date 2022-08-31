@@ -9,6 +9,11 @@ module.exports = {
         .setDescription("this is only a test"),
     execute: async (interaction, client) => {
         const e = await db.test('SELECT * FROM users');
-        return interaction.reply(JSON.stringify(e));
+        console.log(e.rows);
+        return interaction.reply('`SELECT * FROM users` returned:\n\n```js\n' + e.rows.toJSON() + '```');
+    },
+    test: async () => {
+        const e = await db.test('SELECT * FROM users');
+        console.log('`SELECT * FROM users` returned:\n\n```js\n' + JSON.stringify(e.rows) + '```');
     },
 };
