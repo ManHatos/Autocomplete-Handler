@@ -6,12 +6,12 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('export')
 		.setDescription('Export all total moderation times')
-		.addRoleOption((option) => {
+		.addRoleOption((option) => 
 			option
 				.setName('filter')
 				.setDescription('Export all total moderation times for a role')
 				.setRequired(false)
-		}),
+		),
 	execute: async (interaction, client) => {
 		return;
 	},
