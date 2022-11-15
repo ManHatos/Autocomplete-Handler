@@ -67,10 +67,15 @@ client.on("interactionCreate", async (interaction) => {
     console.log(
       `${interaction.user.tag} (#${interaction.user.id}) is using '${interaction.options.getFocused(true).name}' Autocomplete on /${interaction.commandName}:   ${interaction.options.getFocused(true).value}`
     );
-  }
-  process.on("uncaughtException", async (error) => {
-    console.error(error);
-  });
+    }
+});
+
+// process events
+process.on("uncaughtException", error => {
+  console.error(error);
+});
+process.on('warning', warning => {
+  console.error(warning.stack)
 });
 
 client.login(token);
