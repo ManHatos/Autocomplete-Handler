@@ -5,7 +5,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Part
 
 const map = new Map();
 const commandsArray = new Array();
-const token = 'OTU2NzA4ODQ5Mjc5MjAxMjkw.Yj0KjA.a3SvKtSXXC-74FB2UWvQDTwvzE0cls';
+const token = process.env.DISCORD_TOKEN;
 
 client.once("ready", () => {
   const commandFiles = fs.readdirSync("src/commands").filter((file) => file.endsWith(".js"));
