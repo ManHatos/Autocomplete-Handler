@@ -5,11 +5,11 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Part
 
 const map = new Map();
 const commandsArray = new Array();
-const token = process.env.DISCORD_TOKEN;
+const token = 'OTU2NzA4ODQ5Mjc5MjAxMjkw.Yj0KjA.a3SvKtSXXC-74FB2UWvQDTwvzE0cls';
 
 client.once("ready", () => {
-  const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"));
-  const autocompleteFiles = fs.readdirSync("./autocomplete").filter((file) => file.endsWith(".js"));
+  const commandFiles = fs.readdirSync("src/commands").filter((file) => file.endsWith(".js"));
+  const autocompleteFiles = fs.readdirSync("src/autocomplete").filter((file) => file.endsWith(".js"));
 
   for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
