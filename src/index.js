@@ -5,7 +5,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Part
 
 const map = new Map();
 const commandsArray = new Array();
-const token = process.env.DISCORD_TOKEN;
+const { token, guilId } = require('../config.json');
 
 client.once("ready", () => {
   const commandFiles = fs.readdirSync("src/commands").filter((file) => file.endsWith(".js"));
@@ -27,7 +27,7 @@ client.once("ready", () => {
     try {
       console.log("Started refreshing application (/) commands.");
 
-      await rest.put(Routes.applicationGuildCommands(client.user.id, '884351371095203850'), {
+      await rest.put(Routes.applicationGuildCommands(client.user.id, guilId), {
         body: commandsArray,
       });
 
