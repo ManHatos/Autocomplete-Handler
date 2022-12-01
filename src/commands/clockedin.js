@@ -5,7 +5,8 @@ const helpers = require("../helpers.js");
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('clockedin')
-		.setDescription('View all currently on-duty staff members'),
+		.setDescription('View all currently on-duty staff members')
+		.setDMPermission(false),
 	execute: async (interaction, client) => {
 		return;
 	},

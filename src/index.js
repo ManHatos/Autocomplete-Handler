@@ -1,26 +1,25 @@
-const { REST } = require("@discordjs/rest");
-const fs = require("fs");
+const fs = require("node:fs");
 const axios = require("axios");
-const helpers = require("./helpers.js");
-const { Client, GatewayIntentBits, Partials, Routes } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, REST, Routes } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Partials.Channel] });
-const commands = [];
+
 const map = new Map();
+const commandsArray = new Array();
 const token = process.env.DISCORD_TOKEN;
 
 client.once("ready", () => {
-  const commandFiles = fs.readdirSync("src/commands").filter((file) => file.endsWith(".js"));
-  const autocompleteFiles = fs.readdirSync("src/autocomplete").filter((file) => file.endsWith(".js"));
+  const commandFiles = fs.readdirSync("./commands").filter((file) => file.endsWith(".js"));
+  const autocompleteFiles = fs.readdirSync("./autocomplete").filter((file) => file.endsWith(".js"));
 
   for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    map.set(command.data.name + ' slash', command);
-    commands.push(command.data.toJSON());
+    map.set(`commands/${command.data.name}`, command);
+    commandsArray.push(command.data.toJSON());
   }
 
   for (const file of autocompleteFiles) {
     const option = require(`./autocomplete/${file}`);
-    map.set(option.name + ' autocomplete', option);
+    map.set(`autocomplete/${option.name}`, option);
   }
 
   const rest = new REST({ version: '10' }).setToken(token);
@@ -28,8 +27,8 @@ client.once("ready", () => {
     try {
       console.log("Started refreshing application (/) commands.");
 
-      await rest.put(Routes.applicationCommands(client.user.id), {
-        body: commands,
+      await rest.put(Routes.applicationGuildCommands(client.user.id, '884351371095203850'), {
+        body: commandsArray,
       });
 
       console.log("Successfully reloaded application (/) commands.");
@@ -37,12 +36,12 @@ client.once("ready", () => {
       console.error(error);
     }
   })();
-  console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Logged in as ${client.user.tag}.`);
 });
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.type === 2) {
-    const command = map.get(interaction.commandName + ' slash');
+    const command = map.get(`commands/${interaction.commandName}`);
     if (!command) return;
 
     try {
@@ -56,7 +55,8 @@ client.on("interactionCreate", async (interaction) => {
     }
     console.log(`${interaction.user.tag} (#${interaction.user.id}) executed /${interaction.commandName}`);
   } else if (interaction.type === 4) {
-    const option = map.get(interaction.options.getFocused(true).name + ' autocomplete');
+    const focusedOption = interaction.options.getFocused(true);
+    const option = map.get(`autocomplete/${focusedOption.name}`);
     if (!option) return;
 
     try {
@@ -65,9 +65,9 @@ client.on("interactionCreate", async (interaction) => {
       console.error(error);
     }
     console.log(
-      `${interaction.user.tag} (#${interaction.user.id}) is using '${interaction.options.getFocused(true).name}' Autocomplete on /${interaction.commandName}:   ${interaction.options.getFocused(true).value}`
+      `${interaction.user.tag} (#${interaction.user.id}) is using '${focusedOption.name}' Autocomplete on /${interaction.commandName}:   ${focusedOption.value}`
     );
-    }
+  }
 });
 
 // process events

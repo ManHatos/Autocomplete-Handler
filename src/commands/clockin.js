@@ -5,7 +5,8 @@ const helpers = require("../helpers.js");
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('clockin')
-		.setDescription('Start a moderation shift'),
+		.setDescription('Start a moderation shift')
+		.setDMPermission(false),
 	execute: async (interaction, client) => {
 		return;
 	},

@@ -6,6 +6,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("bolo")
     .setDescription("Put out a ban bolo on a player")
+    .setDMPermission(false)
     .addStringOption((option) =>
       option
         .setName("user")

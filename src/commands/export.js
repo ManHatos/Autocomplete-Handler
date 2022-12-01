@@ -6,7 +6,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('export')
 		.setDescription('Export all total moderation times')
-		.addRoleOption((option) => 
+		.setDMPermission(false)
+		.addRoleOption((option) =>
 			option
 				.setName('filter')
 				.setDescription('Export all total moderation times for a role')

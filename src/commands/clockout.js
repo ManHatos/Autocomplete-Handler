@@ -5,7 +5,8 @@ const helpers = require('../helpers.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('clockout')
-		.setDescription('End a moderation shift'),
+		.setDescription('End a moderation shift')
+		.setDMPermission(false),
 	execute: async (interaction, client) => {
 		return;
 	},

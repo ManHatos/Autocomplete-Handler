@@ -6,6 +6,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('log')
 		.setDescription('log a moderation action')
+		.setDMPermission(false)
 		.addStringOption((option) =>
 			option
 				.setName('user')

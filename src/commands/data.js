@@ -6,6 +6,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('data')
 		.setDescription('View your total moderation time')
+		.setDMPermission(false)
 		.addUserOption((option) =>
 			option
 				.setName('user')

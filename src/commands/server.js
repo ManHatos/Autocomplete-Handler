@@ -6,6 +6,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('server')
 		.setDescription('Announce a server startup, or shutdown')
+		.setDMPermission(false)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName('startup')

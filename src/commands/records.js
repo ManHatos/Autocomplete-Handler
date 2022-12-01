@@ -2,10 +2,17 @@ const { SlashCommandBuilder } = require('discord.js');
 const axios = require('axios');
 const helpers = require('../helpers.js');
 
+const test = new SlashCommandBuilder().setName('records')
+	.setDescription("Search a player's active records");
+
+	console.dir(test.toJSON())
+	console.dir(test)
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('records')
 		.setDescription("Search a player's active records")
+		.setDMPermission(false)
 		.addStringOption((option) =>
 			option
 				.setName('user')

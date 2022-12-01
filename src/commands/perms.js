@@ -6,6 +6,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('perms')
 		.setDescription('Save permissions given to players')
+		.setDMPermission(false)
 		.addStringOption((option) =>
 			option
 				.setName('type')
