@@ -1,11 +1,11 @@
 const fs = require("node:fs");
 const axios = require("axios");
-const { Client, GatewayIntentBits, Partials, REST, Routes } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, REST, Routes } = require("discord.js");
 const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Partials.Channel] });
 
 const map = new Map();
 const commandsArray = new Array();
-const { token, guildId } = require('../config.json');
+const { token, guildId } = require("../config.json");
 
 client.once("ready", () => {
   const commandFiles = fs.readdirSync("src/commands").filter((file) => file.endsWith(".js"));
@@ -22,7 +22,7 @@ client.once("ready", () => {
     map.set(`autocomplete/${option.name}`, option);
   }
 
-  const rest = new REST({ version: '10' }).setToken(token);
+  const rest = new REST({ version: "10" }).setToken(token);
   (async () => {
     try {
       console.log("Started refreshing application (/) commands.");
@@ -49,7 +49,10 @@ client.on("interactionCreate", async (interaction) => {
     } catch (error) {
       console.error(error);
       return await interaction.reply({
-        content: "<:FSRP_Warned:961733338329129000> **An unexpected error has occured while trying to execute this command.**\n**Please forward this message to `ManHat#2824`.**\n\n\n```js\n" + error.toJSON() + "```",
+        content:
+          "<:FSRP_Warned:961733338329129000> **An unexpected error has occured while trying to execute this command.**\n**Please forward this message to `ManHat#2824`.**\n\n\n```js\n" +
+          error.toJSON() +
+          "```",
         ephemeral: true,
       });
     }
@@ -71,11 +74,11 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 // process events
-process.on("uncaughtException", error => {
+process.on("uncaughtException", (error) => {
   console.error(error);
 });
-process.on('warning', warning => {
-  console.error(warning.stack)
+process.on("warning", (warning) => {
+  console.error(warning.stack);
 });
 
 client.login(token);

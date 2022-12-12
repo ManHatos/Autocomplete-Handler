@@ -1,9 +1,9 @@
-const { ApplicationCommandType, ApplicationCommandOptionType, Interaction } = require('discord.js');
+const { ApplicationCommandType, ApplicationCommandOptionType, Interaction } = require("discord.js");
 const axios = require("axios");
 const helpers = require("../helpers.js");
 
 module.exports = {
-  name: 'user',
+  name: "user",
   execute: async (interaction, client) => {
     const focusedOption = interaction.options.getFocused(true);
 
@@ -39,5 +39,5 @@ module.exports = {
     await interaction.respond(users).catch(async (error) => {
       console.log(error);
     });
-  }
-}
+  },
+};
