@@ -5,8 +5,6 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Part
 
 const map = new Map();
 const commandsArray = new Array();
-const { token, guildId } = require("../config.json");
-console.log(process.env);
 
 client.once("ready", () => {
 	const commandFiles = fs.readdirSync("src/commands").filter((file) => file.endsWith(".js"));
@@ -23,12 +21,12 @@ client.once("ready", () => {
 		map.set(`autocomplete/${option.name}`, option);
 	}
 
-	const rest = new REST({ version: "10" }).setToken(token);
+	const rest = new REST({ version: "10" }).setToken(process.env.token);
 	(async () => {
 		try {
 			console.log("Started refreshing application (/) commands.");
 
-			await rest.put(Routes.applicationGuildCommands(client.user.id, guildId), {
+			await rest.put(Routes.applicationGuildCommands(client.user.id, process.env.guild), {
 				body: commandsArray,
 			});
 
@@ -77,4 +75,4 @@ process.on("warning", (warning) => {
 	console.error(warning.stack);
 });
 
-client.login(token);
+client.login(process.env.token);
