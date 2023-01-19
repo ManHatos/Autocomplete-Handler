@@ -16,7 +16,7 @@ module.exports = {
 
 		const users = new Array();
 		await axios
-			.get(`https://users.roblox.com/v1/users/search?keyword=${encodeURI(user)}`)
+			.get(`https://users.roblox.com/v1/users/search?keyword=${encodeURIComponent(user)}`)
 			.catch(function (error) {
 				if (error.response) {
 					console.error("Roblox Search API Error", error.response.data);

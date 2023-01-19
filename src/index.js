@@ -6,6 +6,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Part
 const map = new Map();
 const commandsArray = new Array();
 const { token, guildId } = require("../config.json");
+console.log(process.env);
 
 client.once("ready", () => {
 	const commandFiles = fs.readdirSync("src/commands").filter((file) => file.endsWith(".js"));
