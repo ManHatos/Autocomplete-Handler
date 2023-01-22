@@ -3,7 +3,7 @@ const axios = require("axios");
 const { Client, GatewayIntentBits, Partials, REST, Routes } = require("discord.js");
 const client = new Client({ intents: [GatewayIntentBits.Guilds], partials: [Partials.Channel] });
 
-const map = new Map();
+const filesMap = new Map();
 const commandsArray = new Array();
 
 client.once("ready", () => {
@@ -12,25 +12,23 @@ client.once("ready", () => {
 
 	for (const file of commandFiles) {
 		const command = require(`./commands/${file}`);
-		map.set(`commands/${command.data.name}`, command);
+		filesMap.set(`commands/${command.data.name}`, command);
 		commandsArray.push(command.data.toJSON());
 	}
 
 	for (const file of autocompleteFiles) {
 		const option = require(`./autocomplete/${file}`);
-		map.set(`autocomplete/${option.name}`, option);
+		filesMap.set(`autocomplete/${option.name}`, option);
 	}
 
 	const rest = new REST({ version: "10" }).setToken(process.env.token);
 	(async () => {
 		try {
-			console.log("Started refreshing application (/) commands.");
-
+			console.log("Refreshing application (/) commands");
 			await rest.put(Routes.applicationGuildCommands(client.user.id, process.env.guild), {
 				body: commandsArray,
 			});
-
-			console.log("Successfully reloaded application (/) commands.");
+			console.log("Successfully reloaded application (/) commands");
 		} catch (error) {
 			console.error(error);
 		}
@@ -39,8 +37,8 @@ client.once("ready", () => {
 });
 
 client.on("interactionCreate", async (interaction) => {
-	if (interaction.type === 2 /* slash command */) {
-		const command = map.get(`commands/${interaction.commandName}`);
+	if (interaction.type === 2 /* slash command (2) */) {
+		const command = filesMap.get(`commands/${interaction.commandName}`);
 		if (!command) return;
 
 		try {
@@ -53,9 +51,9 @@ client.on("interactionCreate", async (interaction) => {
 			});
 		}
 		console.log(`${interaction.user.tag} (#${interaction.user.id}) executed /${interaction.commandName}`);
-	} else if (interaction.type === 4 /* autocomplete */) {
+	} else if (interaction.type === 4 /* autocomplete (4) */) {
 		const focusedOption = interaction.options.getFocused(true);
-		const option = map.get(`autocomplete/${focusedOption.name}`);
+		const option = filesMap.get(`autocomplete/${focusedOption.name}`);
 		if (!option) return;
 
 		try {

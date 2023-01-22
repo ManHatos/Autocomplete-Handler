@@ -9,24 +9,24 @@ module.exports = {
 		let user = focusedOption.value;
 
 		if (!user || user.length < 3)
-			return await interaction.respond([]).catch(async (error) => {
-				console.error(error);
+			return await interaction.respond([]).catch(async (err) => {
+				console.error(err);
 			});
 		user = user.match(/[\s\S]+ \(@[\s\S]+\)/) ? user.match(/(?=[^]+?[^_]+)\w{3,20}(?=\))/)[0] || user : user;
 
 		const users = new Array();
 		await axios
 			.get(`https://users.roblox.com/v1/users/search?keyword=${encodeURIComponent(user)}`)
-			.catch(function (error) {
-				if (error.response) {
-					console.error("Roblox Search API Error", error.response.data);
-					console.error(error.response.status);
+			.catch((err) => {
+				if (err.response) {
+					console.error("Roblox Search API Error", err.response.data);
+					console.error(err.response.status);
 				} else {
-					console.error("Roblox Search API Error", error.message);
+					console.error("Roblox Search API Error", err.message);
 				}
 			})
-			.then(function (response) {
-				response?.data?.data?.map((map) => {
+			.then((res) => {
+				res?.data?.data?.map((map) => {
 					users.push({
 						name: `${map.displayName.replace(/(?<=.{35})[\s\S]+/, "...")} (@${map.name.replace(/(?<=.{55})[\s\S]+/, "...")})`,
 						value: map.id.toString(),
@@ -39,16 +39,16 @@ module.exports = {
 					usernames: [user],
 					excludeBannedUsers: true,
 				})
-				.catch(function (error) {
-					if (error.response) {
-						console.error("Roblox Specific Search API Error", error.response.data);
-						console.error(error.response.status);
+				.catch((err) => {
+					if (err.response) {
+						console.error("Roblox Specific Search API Error", err.response.data);
+						console.error(err.response.status);
 					} else {
-						console.error("Roblox Specific Search API Error", error.message);
+						console.error("Roblox Specific Search API Error", err.message);
 					}
 				})
-				.then(function (response) {
-					response?.data?.data?.map((map) => {
+				.then((res) => {
+					res?.data?.data?.map((map) => {
 						users.push({
 							name: `${map.displayName.replace(/(?<=.{35})[\s\S]+/, "...")} (@${map.name.replace(/(?<=.{55})[\s\S]+/, "...")})`,
 							value: map.id.toString(),
