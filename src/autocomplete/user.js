@@ -1,6 +1,5 @@
 const { ApplicationCommandType, ApplicationCommandOptionType, Interaction } = require("discord.js");
 const axios = require("axios");
-const helpers = require("../helpers.js");
 
 module.exports = {
 	name: "user",
